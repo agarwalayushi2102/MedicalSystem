@@ -37,11 +37,11 @@ app.set("view engine", "ejs");
 
 // load assets
 app.use('/css', express.static(path.resolve(__dirname, "assets/css")))
-app.use('/img', express.static(path.resolve(__dirname, "../views/img")))
-app.use('/img', express.static(path.resolve(__dirname, "../views/login")))
-app.use('/img', express.static(path.resolve(__dirname, "../views/include")))
+app.use('/img', express.static(path.resolve(__dirname, "./views/img")))
+app.use('/img', express.static(path.resolve(__dirname, "./views/login")))
+app.use('/img', express.static(path.resolve(__dirname, "./views/include")))
 
-app.use('/img', express.static(path.resolve(__dirname, "../views/Specialities")))
+app.use('/img', express.static(path.resolve(__dirname, "./views/Specialities")))
 app.use('/js', express.static(path.resolve(__dirname, "assets/js")))
 
 
