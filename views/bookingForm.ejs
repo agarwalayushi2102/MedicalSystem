@@ -11,12 +11,14 @@
 <body>
 <script>
 
-  function onBookingSubmit(<%=console.log%>) {
+  function onBookingSubmit() {
     const patientName = document.querySelector("#grid-first-name").value
     const patientEmail = document.querySelector("#grid-email").value
     fetch('/appointment_Booking', {
       method: 'POST', body: JSON.stringify({
-        name, email, slot
+       name: patientName,
+        email : patientEmail,
+        slot
       })
     })
 
