@@ -27,11 +27,11 @@ router.get('/:appointment_id', async (req, res) => {
 
 
 router.post('/', async (req, res, next) => {
-
-    const {patientId, doctorId, slot} = req.body;
-    if (!patientId) {
+    console.log(req.body);
+    const {email, doctorId, slot} = req.body;
+    if (!email) {
         return res.status(400).json({
-            message: 'patientId id required',
+            message: 'email id required',
         });
     } else if (!doctorId) {
         return res.status(400).json({
@@ -43,11 +43,16 @@ router.post('/', async (req, res, next) => {
         });
     }
     // new user
-    const patient = await Patient.findById(patientId);
+    const patient = await Patient.findOne({email});
     const doctor = await Doctor.findById(doctorId);
+    if(patient == null || !patient) {
+        return res.status(200).json({
+            message: 'No patient found with the email. Please signup',
+        });
+    }
 
     if (slot.from < doctor.timings.from || slot.to > doctor.timings.to) {
-        return res.status(400).json({
+        return res.status(200).json({
             message: 'Given slot is not available in doctor timing',
             timings: doctor.timings
         });
@@ -62,7 +67,7 @@ router.post('/', async (req, res, next) => {
         const toNotOk = slot.to >= appointment.slot.from && slot.to <= appointment.slot.to;
         const equal = slot.from === appointment.slot.from && slot.to === appointment.slot.to;
         if (fromNotOk || toNotOk || equal) {
-            return res.status(400).json({
+            return res.status(200).json({
                 message: 'slot is already booked',
             });
         }
@@ -73,11 +78,11 @@ router.post('/', async (req, res, next) => {
         slot: slot
     })
     await model.save();
-    const name = await Patient.findById(req.params.name);
-    const email = await Patient.findById(req.params.email);
 
-    return res.status(200)
-    console.log(req.body);
+    return res.status(200).json({
+        message: 'booking confirmed',
+
+    });
 
 // save user in the database
 });

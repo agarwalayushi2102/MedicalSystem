@@ -6,12 +6,14 @@ function onSignIn(googleUser) {
     $(".data").css("display", "block");
     $(".g-signin2").css("display", "none");
     fetch('/auth/login', {
-            method: 'POST', body: JSON.strigify({
-                name: profile.getName(),
-                email: profile.getEmail(),
-            }),
-        });
-    localStorage.setItem('patient_id', patient_id)
+        headers: {'Content-Type': 'application/json'},
+        method: 'POST', body: JSON.stringify({
+            name: profile.getName(),
+            email: profile.getEmail(),
+        }),
+    }).then(response => response.json())
+        .then(data => localStorage.setItem('patient_id', data.patient._id))
+        .catch(err => console.log(err))
 }
 
 //route auth/login
