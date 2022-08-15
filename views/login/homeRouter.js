@@ -1,15 +1,12 @@
 const express=require("express");
 const Router = express.Router();
-const homeSchema = require('../models/homeSchema');
+const Patient = require("../../server/model/patient_model");
+const Doctor = require("../../server/model/doctor_model");
+const Login = require("./userSchema");
 
 Router.get('/', (err,res)=>{
     res.render('register', {title : 'monil', password: '', email: ''})
 })
-
-Router.get('/test', (req, res) => {
-    res.render('test');
-   });
-
 
 Router.post('/register', async(req,res)=>{
     try {
@@ -35,7 +32,8 @@ Router.post('/register', async(req,res)=>{
         }else{
             res.render('register', {title : '', password: 'password not matched', email: ''})
         }
-
+        const Email = await Login.findOne({email});
+        const Password = await Login.findOne({password});
         
     } catch (error) {
         res.render('register', {title : 'Done', password: '', email: ''})
