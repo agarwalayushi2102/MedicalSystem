@@ -4,11 +4,11 @@ const morgan = require('morgan');
 const bodyparser = require("body-parser");
 const path = require('path');
 const connectDB = require('./server/database/connection');
-// const DoctorSchema= require('./server/model/doctor_model');
+const mongoose = require("mongoose");
 const app = express();
 
 
-dotenv.config( { path : 'config.env'} )
+dotenv.config({path: 'config.env'})
 const PORT = process.env.PORT || 8080
 
 // log requests
@@ -18,7 +18,7 @@ app.use(morgan('tiny'));
 connectDB();
 
 // parse request to body-parser
-app.use(bodyparser.urlencoded({ extended : true}))
+app.use(bodyparser.urlencoded({extended: true}))
 app.use(bodyparser.json());
 
 
@@ -28,7 +28,7 @@ const routesRouter = require('./server/routes/routes');
 const doctorRouter = require('./server/routes/doctors');
 const appointmentRouter = require('./server/routes/appointment');
 const usersRouter = require('./server/routes/users');
-const mongoose = require("mongoose");
+const homeRouter = require('./views/login/homeRouter');
 
 // set view engine
 app.set('views', './views');
@@ -45,14 +45,16 @@ app.use('/specialities', express.static(path.resolve(__dirname, "./views/Special
 app.use('/js', express.static(path.resolve(__dirname, "./assets/js")))
 
 
-
 //load router
- app.use('/', routesRouter);
+app.use('/', routesRouter);
 app.use('/patient', patientRouter);
 app.use('/doctors', doctorRouter);
 app.use('/appointment_Booking', appointmentRouter);
 app.use('/auth', usersRouter);
+app.use('/user', homeRouter);
 
 
 
-app.listen(PORT, ()=> { console.log(`Server is running on http://localhost:${PORT}`)});
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`)
+});
